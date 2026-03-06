@@ -1,6 +1,90 @@
 <!DOCTYPE html>
 <head></head>
 <body>
+    <link rel="stylesheet" href="styles.css">
+    <header>
+      <nav class="navbar">
+        <a href= "index.html">Home</a>
+        <a href= "info.html">Info</a>
+        <a href="about.html">About</a>
+      </nav>
+    </header>
     <h1>About Me!</h1>
-    <p>Hello! The year is 2026 and I am currently finishing my last year as an undergrad at GSU! Thank you for wishing to know more about me!</p>
+    <h2>Hello! I am Trenton Ellis, the creator of this website!</h2> 
+    <p>The year is 2026 and I am currently finishing my last year as an undergrad at GSU! This website was made as a project for my Computer Networks class.
+        <br /><br />
+        I am an aspiring network engineer and am currently reading [what feels like] a bunch of books regarding the career.
+        I am also a portrait artist who is currectly working on... being not that, and branching out to gesture, industrial design, and landscape art as well.
+        I have a couple of career projects on the way which I pray I can finish before I graduate.
+        <br /><br />
+        Anyhow, though I had some prior knowledge on everything (barring ReactJs), I still ended up needing some additional sources to help me complete this project
+        and fill out the required information. I am going to cite some of these sources below, some of which are from the books I was reading prior to starting this project.
+        <br />All in all, this project took about like a week to finish, though it probably doesn't look it haha... 
+        <br /><br />
+        <hr />
+        <h2><b><u>Sources Used:</u></b></h2>
+        <a href= "https://learning.oreilly.com/library/view/html-css/9781118206911/"> HTML & CSS: Design and Build Websites by John Duckett </a>
+        <br /><br />
+        <a href= "https://learning.oreilly.com/course/reactjs-the/9781836641551/"> HReactJS - The Beginner Masterclass by Paulo Dichone</a>
+        <br /><br />
+        <a href= "https://learning.oreilly.com/library/view/tcp-ip-illustrated-volume/9780132808200/"> TCP/IP Illustrated, Volume 1: The Protocols, 2nd Edition by Kevin R. Fall, W. Richard Stevens</a>
+        <br /><br />
+        <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https">Securing your GitHub Pages site with HTTPS by Github</a>
+        <hr />
+        <h3>Even more...</h3>
+        Thank you for checking out this project and making it so far down this page!
+        <br />
+        One last thing, for my JS implementation, I have added a collage of some of my older portrait works down below.
+        Press the button to iterate through the eight of them I have added. Enjoy! Hope to see you later down the line in a future project.
+    </p>
+    <div id="random-image-widget"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+
+const images = [
+    "images/image0.jpg",
+    "images/image1.png",
+    "images/image2.jpeg",
+    "images/image3.jpeg",
+    "images/image4.jpg",
+    "images/image5.jpeg",
+    "images/image6.jpeg",
+    "images/image7.jpeg"
+];
+
+function ImageCycler() {
+
+    const [index, setIndex] = React.useState(0);
+
+    function nextImage() {
+        setIndex((index + 1) % images.length);
+    }
+
+    return (
+        <div>
+            <button onClick={nextImage}>
+                Next Image
+            </button>
+
+            <div>
+                <img 
+                    src={images[index]} 
+                    style={{width:"500px", marginTop:"50px"}} 
+                />
+            </div>
+        </div>
+    );
+}
+
+const root = ReactDOM.createRoot(
+    document.getElementById("random-image-widget")
+);
+
+root.render(<ImageCycler />);
+
+</script>
 </body>
