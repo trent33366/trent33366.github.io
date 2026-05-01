@@ -1,18 +1,257 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <header>
-      <nav class="navbar">
-        <a href= "index.html">Home</a>
-        <a href= "info.html">Info</a>
-        <a href="about.html">About</a>
-      </nav>
-    </header>
-    <link rel="stylesheet" href="styles.css">
-    <h1>A barebones website...</h1>
-    <h2>Project by Trenton Ellis</h2>
-    <p>Welcome! This is a website hosted by Github that I am using for my <b>Computer Networks</b> college class! <br /> <br />Please have a look at our <a href="info.html"> Information Page</a> here!
-   <br />And when you're done with that, I would be so happy if you checked out my <a href="about.html"> About Me</a> page!
-  <hr /></p>
-  </body>
+<head>
+  <title>My Website</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- React -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+
+<body>
+
+<header>
+  <nav class="navbar">
+    <a href="index.html">Home</a>
+    <a href="info.html">Info</a>
+    <a href="about.html">About</a>
+  </nav>
+</header>
+
+<h1>A slightly less barebones website...</h1>
+<h2>Project by Trenton Ellis</h2>
+
+<p>
+Welcome! This is a website hosted by Github that I am using for my
+<b>Computer Networks</b> college class!
+<br><br>
+
+Please have a look at our
+<a href="info.html">Information Page</a> here!
+
+<br>
+
+And when you're done with that, I would be so happy if you checked out my
+<a href="about.html">About Me</a> page!
+</p>
+
+<hr>
+
+<!-- Login area -->
+<div id="auth-root"></div>
+
+<!-- Bottom welcome message -->
+<div id="welcome-message"></div>
+
+<script type="text/babel">
+
+const { useState, useEffect } = React;
+
+/* Replace with your own values */
+const supabase = window.supabase.createClient(
+  "https://kkttizeenrmtayxsuodw.supabase.co",
+  "sb_publishable_3Pr30h4kbFSNX8GX6jX_4Q_T447swFh"
+);
+
+function AuthApp() {
+  const [user, setUser] = useState(null);
+  const [mode, setMode] = useState("");
+
+  const [displayName, setDisplayName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    async function loadUser() {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    }
+
+    loadUser();
+
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  async function signUp() {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          display_name: displayName
+        }
+      }
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Signup successful!");
+      setMode("");
+      setDisplayName("");
+      setEmail("");
+      setPassword("");
+    }
+  }
+
+  async function login() {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      setMode("");
+      setEmail("");
+      setPassword("");
+    }
+  }
+
+  async function logout() {
+    await supabase.auth.signOut();
+    setUser(null);
+  }
+
+  const name =
+    user?.user_metadata?.display_name || "User";
+
+  return (
+    <div>
+
+      {/* Logged In */}
+      {user ? (
+        <div>
+          <h2>Account</h2>
+          <p>Logged in as {user.email}</p>
+          <button onClick={logout}>Log Out</button>
+        </div>
+      ) : (
+
+        <div>
+
+          {/* Main Buttons */}
+          {mode === "" && (
+            <div>
+              <button onClick={() => setMode("login")}>
+                Login
+              </button>
+
+              <button onClick={() => setMode("signup")}>
+                Sign Up
+              </button>
+            </div>
+          )}
+
+          {/* Login */}
+          {mode === "login" && (
+            <div>
+              <h2>Login</h2>
+
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
+              />
+
+              <br /><br />
+
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
+              />
+
+              <br /><br />
+
+              <button onClick={login}>
+                Submit Login
+              </button>
+
+              <button onClick={() => setMode("")}>
+                Cancel
+              </button>
+            </div>
+          )}
+
+          {/* Signup */}
+          {mode === "signup" && (
+            <div>
+              <h2>Create Account</h2>
+
+              <input
+                type="text"
+                placeholder="Display Name"
+                value={displayName}
+                onChange={(e)=>setDisplayName(e.target.value)}
+              />
+
+              <br /><br />
+
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
+              />
+
+              <br /><br />
+
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
+              />
+
+              <br /><br />
+
+              <button onClick={signUp}>
+                Create Account
+              </button>
+
+              <button onClick={() => setMode("")}>
+                Cancel
+              </button>
+            </div>
+          )}
+
+        </div>
+      )}
+        <br /><br />
+      {/* Bottom Welcome Message */}
+
+      {user && (
+        <h6>
+          hello {name} :)
+        </h6>
+      )}
+
+    </div>
+  );
+}
+
+ReactDOM.createRoot(
+  document.getElementById("auth-root")
+).render(<AuthApp />);
+
+</script>
+
+</body>
 </html>
