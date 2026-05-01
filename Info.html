@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+</head>
+<body>
+        <header>
+      <nav class="navbar">
+        <a href= "index.html">Home</a>
+        <a href= "info.html">Info</a>
+        <a href="about.html">About</a>
+      </nav>
+    </header>
+    <link rel="stylesheet" href="styles.css">
+    <h1>Site Networking</h1>
+    <h2><u>DNS</u></h2>
+    <p><b>DNS is an application layer protocol which handles DNS requests from a client and returns the resolved IP address.</b> The main part of a DNS request is the name, or url, of the website the client is attempting to reach. So think, when you wish to go to, lets say, <i>www.google.com</i>, this name is a URL which is sent as a DNS request to DNS lookup servers, which then returns the IP address back to your computer, allowing the computer to find and establish a connection with that website. DNS, as a service, exists almost exclusively to allow for a more “humanitarian” way to traverse the Internet. As in, because of DNS, humans only have to remember names like Amazon or YouTube rather than… whatever <i>“[2001:0db8:85a3:08d3:1319:8a2e:0370:7344]”</i> is. <b>The DNS lookup process is typically protected by the DNSsec protocol which offers authenticity and integrity to the DNS server communications</b>. 
+        <br /><br />Of course, considering the sheer amount of websites there are, the DNS lookup process is streamlined via a hierarchical “parent-child” structure system which distributes the lookup process to dedicated servers or protocols based on the parent. So, for a URL like <i>‘trent33366.github.io’,</i> a DNS lookup starts at the root parent ‘.’, which is implied at the end of the URL, so imagine <i>“trent33366.github.io.”</i> instead of just <i>“trent33366.github.io”</i> then, it traverses the list of ‘.’ children, identifies <i> ‘io’ </i>as the respective child, then on the next step of DNS lookup, the <i>‘io’</i> acts as the parent, and then attempts to locate its child <i>“github.”</i> and then so on to <i>‘github’</i> being the parent of the subdomain <i>“trent33366.”</i> Once the final stage of the DNS lookup process is finished, the IP is located and sent back to the client.
+        <br /><br />Once the client has the IP for the <i>github.io</i> website, it attempts a TLS connection with the https protocol. <b>TLS is an application-layer cryptographic security protocol for establishing secure TCP connections between a client and a server.</b> The client attempts a TLS connection by sending the server a TLS handshake message using the IP address, this message is essentially a query to the server to agree on the security protocols, encryption schemes, and cryptography of the TCP connection. Once the server responds and agrees with the cryptography scheme with their own handshake, the two have established a secure TCP connection. </p>
+        <hr />
+    <h2><u>IP Addressing</u></h2>
+        <img src="Networkimages/DNSresolve.png" alt="" class="imagesC">
+        <br /><br />
+        <hr />
+        <h2><u>Protocols</u></h2>
+        <p>Github pages uses TLS and enforces Https protocols via redirecting http requests to https. 
+            Github pages receives it's cryptographic keys from Let's Encrypt. Find Github's official documentation 
+            <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https">here</a>.
+            <br /><br />
+            <img src="Networkimages/Headers.png" alt="" class="imagesC">
+            <br /><br />
+            Here, information regarding the connection is displayed in the developer tools. From this screenshot we can see the
+            successful https connection.
+            <br /><br />
+            <img src="Networkimages/Status.png" alt="" class="imagesC">
+            <br /><br />
+            Here we can see the status code "200", denoting a successful connection. <b>The status code is 
+            a code sent from the server to the client denoting the outcome/success of the request</b>
+        </p>
+    </body>
